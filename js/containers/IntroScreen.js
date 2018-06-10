@@ -13,7 +13,20 @@ import { fetchUserLocation } from '../actions'
 import { StyledButton, StyledText, MonoText } from '../components/widgets'
 import { SpringAppearAnimation } from '../components/animations'
 
-class Intro extends Component<*, *> {
+type Location = {
+    city: string,
+    region: string,
+}
+
+type Props = {
+    fetchLocation: () => void,
+    fetching: boolean,
+    error: mixed,
+    encouragementVisible: boolean,
+    location: Location,
+}
+
+class Intro extends Component<Props, *> {
     _buttonPressed = () => {
         this.props.fetchLocation()
     }
@@ -86,7 +99,10 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export const IntroScreen = connect(mapStateToProps, mapDispatchToProps)(Intro)
+export const IntroScreen = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(Intro)
 
 const styles = StyleSheet.create({
     container: {

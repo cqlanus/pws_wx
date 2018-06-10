@@ -1,1 +1,1 @@
-export { IntroScreen } from "./IntroScreen"
+export { IntroScreen } from './IntroScreen'

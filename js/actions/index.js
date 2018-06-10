@@ -1,1 +1,1 @@
-export { fetchUserLocation } from "./location"
+export { fetchUserLocation } from './location'
