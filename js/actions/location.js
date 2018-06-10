@@ -1,3 +1,6 @@
+// @flow
+import { api } from '../api/ApiManager'
+
 export const Types = {
     LOCATION_FETCH: 'LOCATION_FETCH',
     LOCATION_FETCH_STARTED: 'LOCATION_FETCH_STARTED',
@@ -55,4 +58,14 @@ export const fetchUserLocation = () => (dispatch, getState) => {
                 ),
             ),
         )
+}
+
+export const getForecast = async () => {
+    const point = { lat: '42.0034', lng: '-88.0586' }
+    try {
+        const response = await api.nws.getQuickForecast(point)
+        return response
+    } catch (error) {
+        return { error }
+    }
 }

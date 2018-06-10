@@ -1,0 +1,1 @@
+export { NwsService } from './NwsService'
