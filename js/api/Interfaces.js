@@ -13,4 +13,5 @@ export interface NwsInterface extends ServiceInterface {
 
 export interface PwsInterface extends ServiceInterface {
     getConditions: mixed => Promise<*>;
+    subscribe: () => void;
 }

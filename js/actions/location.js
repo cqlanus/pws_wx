@@ -28,7 +28,7 @@ const fetchUserLocationStarted = () => {
     }
 }
 
-export const fetchUserLocation = () => (dispatch, getState) => {
+export const fetchUserLocation = () => (dispatch: any) => {
     dispatch(fetchUserLocationStarted())
     fetch('https://ipinfo.io', {
         method: 'GET',
