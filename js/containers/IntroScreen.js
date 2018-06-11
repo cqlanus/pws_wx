@@ -9,7 +9,7 @@ import {
     ActivityIndicator,
 } from 'react-native'
 import { connect } from 'react-redux'
-import { fetchUserLocation, getForecast } from '../actions'
+import { fetchUserLocation, getForecast, getDeviceData } from '../actions'
 import { StyledButton, StyledText, MonoText } from '../components/widgets'
 import { SpringAppearAnimation } from '../components/animations'
 
@@ -29,8 +29,10 @@ type Props = {
 class Intro extends Component<Props, *> {
     _buttonPressed = async () => {
         this.props.fetchLocation()
-        const forecast = await getForecast()
-        console.log('forecast', forecast)
+        // const forecast = await getForecast()
+        // console.log('forecast', forecast)
+        const data = await getDeviceData()
+        console.log('data', data)
     }
 
     render() {

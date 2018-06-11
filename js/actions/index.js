@@ -1,1 +1,1 @@
-export { fetchUserLocation, getForecast } from './location'
+export { fetchUserLocation, getForecast, getDeviceData } from './location'

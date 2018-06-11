@@ -69,3 +69,12 @@ export const getForecast = async () => {
         return { error }
     }
 }
+
+export const getDeviceData = async () => {
+    try {
+        const response = await api.pws.getConditions()
+        return response
+    } catch (error) {
+        return { error }
+    }
+}

@@ -1,10 +1,10 @@
 // @flow
 import { NwsInterface, PwsInterface } from '.'
-import { NwsService } from './services'
+import { NwsService, PwsService } from './services'
 
 const apiConfig = {
     nws: NwsService,
-    pws: '',
+    pws: PwsService,
     maps: '',
 }
 
@@ -21,7 +21,7 @@ class ApiManager {
 
     constructor(config: ApiConfig) {
         this.nws = new config.nws()
-        this.pws = config.pws
+        this.pws = new config.pws()
         this.maps = config.maps
     }
 }
