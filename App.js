@@ -1,15 +1,47 @@
 import React, { Component } from 'react'
-import { Provider } from 'react-redux'
+import { Provider, connect } from 'react-redux'
+import {
+    Router,
+    Lightbox,
+    Tabs,
+    Modal,
+    Reducer,
+} from 'react-native-router-flux'
 import { configureStore } from './js/store'
+import { RootIdentifiers } from './js/screens'
+import { TabScene } from './js/components/scenes/Tabs'
 
-import { IntroScreen } from './js/containers'
-
+const RouterWithRedux = connect()(Router)
 const store = configureStore()
 
-export const App = props => {
-    return (
-        <Provider store={store}>
-            <IntroScreen />
-        </Provider>
-    )
+export class App extends Component {
+    _reducerCreate = params => {
+        const defaultReducer = new Reducer(params)
+        return (state, action) => {
+            return defaultReducer(state, action)
+        }
+    }
+    render() {
+        const { PWS, Forecast, Radar } = TabScene
+
+        return (
+            <Provider store={store}>
+                <RouterWithRedux createReducer={this._reducerCreate}>
+                    <Lightbox>
+                        <Modal key={RootIdentifiers.Root}>
+                            <Tabs
+                                key={RootIdentifiers.Tabs}
+                                backTitle={'Back'}
+                                tabBarPosition="bottom"
+                                hideNavBar>
+                                {PWS}
+                                {Forecast}
+                                {Radar}
+                            </Tabs>
+                        </Modal>
+                    </Lightbox>
+                </RouterWithRedux>
+            </Provider>
+        )
+    }
 }
