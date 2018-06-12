@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import { createStore, applyMiddleware } from 'redux'
-import { default as thunkMiddleware } from 'redux-thunk'
 import { Provider } from 'react-redux'
-import { rootReducer } from './js/redux'
+import { configureStore } from './js/store'
 
 import { IntroScreen } from './js/containers'
 
-const store = createStore(rootReducer, {}, applyMiddleware(thunkMiddleware))
+const store = configureStore()
 
 export const App = props => {
     return (
