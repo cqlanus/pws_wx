@@ -1,3 +1,6 @@
 export { StyledButton } from './StyledButton'
 export { StyledText } from './StyledText'
 export { MonoText } from './MonoText'
+export { TabIcon } from './TabIcon'
+export { Row } from './Row'
+export { Card } from './Card'

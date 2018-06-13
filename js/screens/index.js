@@ -1,4 +1,5 @@
 export { IntroScreen } from './IntroScreen'
+export { PWSContainer } from './PWS'
 
 export const TabIdentifiers = {
     PWS: 'Tab.PWS',
@@ -7,7 +8,7 @@ export const TabIdentifiers = {
 }
 
 export const ScreenIdentifiers = {
-    Intro: 'Screen.Intro',
+    PWS: 'Screen.PWS',
     Intro2: 'Screen.Intro2',
     Intro3: 'Screen.Intro3',
 }

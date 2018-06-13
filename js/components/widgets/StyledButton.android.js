@@ -1,38 +1,36 @@
 // @flow
-import React from 'react'
-import PropType from 'prop-types'
+import React, { Component } from 'react'
 import { StyleSheet, TouchableNativeFeedback, View } from 'react-native'
-import { StyledText } from './StyledText'
+import { StyledText } from './'
 
-const StyledButtonProps = {
-    title: PropType.string,
+type Props = {
+    title: string,
 }
 
-export const StyledButton = (props: typeof StyledButtonProps) => (
-    <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple('#fff', false)}
-        {...props}>
-        <View style={styles.button}>
-            <StyledText style={styles.buttonText}>{props.title}</StyledText>
-        </View>
-    </TouchableNativeFeedback>
-)
+export class StyledButton extends Component<Props> {
+    static defaultProps = {
+        title: 'Button',
+    }
 
-StyledButton.defaultProps = {
-    title: 'Push Me!',
+    render() {
+        return (
+            <TouchableNativeFeedback {...this.props}>
+                <View style={styles.button}>
+                    <StyledText style={styles.buttonText}>
+                        {this.props.title}
+                    </StyledText>
+                </View>
+            </TouchableNativeFeedback>
+        )
+    }
 }
-
-StyledButton.propTypes = StyledButtonProps
 
 const styles = StyleSheet.create({
     button: {
-        paddingHorizontal: 16,
-        paddingVertical: 8,
         padding: 24,
         backgroundColor: '#f74902',
     },
     buttonText: {
         color: '#fff',
-        // fontFamily: "Mukta-SemiBold"
     },
 })

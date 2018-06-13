@@ -10,6 +10,7 @@ import {
 import { configureStore } from './js/store'
 import { RootIdentifiers } from './js/screens'
 import { TabScene } from './js/components/scenes/Tabs'
+import { Colors } from './js/resources'
 
 const RouterWithRedux = connect()(Router)
 const store = configureStore()
@@ -33,6 +34,8 @@ export class App extends Component {
                                 key={RootIdentifiers.Tabs}
                                 backTitle={'Back'}
                                 tabBarPosition="bottom"
+                                activeTintColor={Colors.blue}
+                                inactiveTintColor={Colors.grey}
                                 hideNavBar>
                                 {PWS}
                                 {Forecast}
