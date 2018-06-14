@@ -15,9 +15,8 @@ export class TabIcon extends Component<*> {
         return (
             <View style={container}>
                 <Image
-                    style={icon}
+                    style={[icon, { tintColor }]}
                     source={image}
-                    tintColor={tintColor}
                     resizeMode={'contain'}
                 />
             </View>

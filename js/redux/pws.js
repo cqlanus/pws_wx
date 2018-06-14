@@ -1,5 +1,6 @@
 // @flow
 import { api } from '../api/ApiManager'
+import { createSelector } from 'reselect'
 
 /* ACTION TYPES */
 const Types = {
@@ -74,3 +75,93 @@ export const pws = (state: State = initialState, action: Action) => {
             return state
     }
 }
+
+/* SELECTORS */
+const getDevice = state => state.pws && state.pws.device
+
+const getCurrentConditions = createSelector(
+    [getDevice],
+    device => device && device[0],
+)
+
+export const getTemperatureData = createSelector(
+    [getCurrentConditions],
+    conditions => {
+        if (conditions) {
+            const { date, tempf, feelsLike, dewPoint, humidity } = conditions
+            return { date, tempf, feelsLike, dewPoint, humidity }
+        }
+    },
+)
+
+export const getWindData = createSelector(
+    [getCurrentConditions],
+    conditions => {
+        if (conditions) {
+            const {
+                date,
+                winddir,
+                windspeedmph,
+                windgustmph,
+                maxdailygust,
+            } = conditions
+            return { date, winddir, windspeedmph, windgustmph, maxdailygust }
+        }
+    },
+)
+
+export const getRainData = createSelector(
+    [getCurrentConditions],
+    conditions => {
+        if (conditions) {
+            const {
+                date,
+                hourlyrainin,
+                dailyrainin,
+                weeklyrainin,
+                monthlyrainin,
+                totalrainin,
+                lastRain,
+            } = conditions
+            return {
+                date,
+                hourlyrainin,
+                dailyrainin,
+                weeklyrainin,
+                monthlyrainin,
+                totalrainin,
+                lastRain,
+            }
+        }
+    },
+)
+
+export const getPressureData = createSelector(
+    [getCurrentConditions],
+    conditions => {
+        if (conditions) {
+            const { date, baromrelin, baromabsin } = conditions
+            return { date, baromrelin, baromabsin }
+        }
+    },
+)
+
+export const getIndoorData = createSelector(
+    [getCurrentConditions],
+    conditions => {
+        if (conditions) {
+            const { date, tempinf, humidityin } = conditions
+            return { date, tempinf, humidityin }
+        }
+    },
+)
+
+export const getSolarData = createSelector(
+    [getCurrentConditions],
+    conditions => {
+        if (conditions) {
+            const { date, uv, solarradiation } = conditions
+            return { date, uv, solarradiation }
+        }
+    },
+)

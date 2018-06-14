@@ -35,7 +35,7 @@ export class App extends Component {
                                 backTitle={'Back'}
                                 tabBarPosition="bottom"
                                 activeTintColor={Colors.blue}
-                                inactiveTintColor={Colors.grey}
+                                inactiveTintColor={Colors.darkGrey}
                                 hideNavBar>
                                 {PWS}
                                 {Forecast}

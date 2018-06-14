@@ -14,3 +14,6 @@ export const rootReducer = combineReducers({
 export { fetchUserLocation } from './location'
 export { fetchPws } from './pws'
 export { fetchNws } from './nws'
+
+/* SELECTORS */
+export { getTemperatureData } from './pws'

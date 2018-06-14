@@ -1,33 +1,30 @@
 // @flow
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
-import { Row, Card, StyledText } from '../components/widgets'
+import { View, StyleSheet, ScrollView } from 'react-native'
+import { TemperatureCard, TitleHeader } from '../components/widgets'
 import { Colors } from '../resources'
-import { fetchPws } from '../redux'
+import { fetchPws, getTemperatureData } from '../redux'
 
 type Props = {
-    device: any,
+    tempData: any,
     fetchPws: () => void,
 }
 
 class PWS extends Component<Props> {
     componentDidMount() {
-        console.log('mount')
         this.props.fetchPws()
     }
 
     render() {
-        const { container, card } = styles
-        console.log('hello')
-        if (this.props.device) {
-            console.log(this.props.device)
-        }
+        const { container, scrollView } = styles
+        const { tempData } = this.props
         return (
             <View style={container}>
-                <Card style={card}>
-                    <StyledText>This is the PWS landing screen</StyledText>
-                </Card>
+                <TitleHeader title={'PWS WX'} />
+                <ScrollView style={scrollView}>
+                    {tempData && <TemperatureCard tempData={tempData} />}
+                </ScrollView>
             </View>
         )
     }
@@ -36,19 +33,17 @@ class PWS extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        width: '100%',
         alignItems: 'center',
     },
-    card: {
-        width: '95%',
-        padding: 20,
-        backgroundColor: Colors.white,
+    scrollView: {
+        width: '100%%',
     },
 })
 
 const mapState = state => {
     return {
-        device: state.pws.device,
+        tempData: getTemperatureData(state),
     }
 }
 
