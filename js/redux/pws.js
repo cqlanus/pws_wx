@@ -77,7 +77,8 @@ export const pws = (state: State = initialState, action: Action) => {
 }
 
 /* SELECTORS */
-const getDevice = state => state.pws && state.pws.device
+export const getDevice = (state: { pws: State }) =>
+    state.pws && state.pws.device
 
 const getCurrentConditions = createSelector(
     [getDevice],
