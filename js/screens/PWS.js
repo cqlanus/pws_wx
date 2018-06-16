@@ -11,9 +11,7 @@ import {
 import { fetchPws, getTemperatureData, getWindData } from '../redux'
 
 type Props = {
-    tempData: any,
-    windData: any,
-    device: any,
+    currentResult: any,
     isWorking: boolean,
     fetchPws: () => void,
 }
@@ -24,9 +22,11 @@ class PWS extends Component<Props> {
     }
 
     _renderCards = () => {
-        const { device, tempData, windData } = this.props
+        const { currentResult } = this.props
         const { cardContainer } = styles
-        if (device) {
+        if (currentResult) {
+            const tempData = getTemperatureData(currentResult)
+            const windData = getWindData(currentResult)
             return (
                 <View style={cardContainer}>
                     <TemperatureCard tempData={tempData} />
@@ -37,8 +37,8 @@ class PWS extends Component<Props> {
     }
 
     render() {
-        const { container, scrollView, cardContainer } = styles
-        const { tempData, isWorking, device } = this.props
+        const { container, scrollView } = styles
+        const { isWorking } = this.props
         return (
             <View style={container}>
                 <TitleHeader title={'PWS WX'} />
@@ -74,9 +74,10 @@ const styles = StyleSheet.create({
 const mapState = state => {
     return {
         isWorking: state.pws.isWorking,
-        device: state.pws.device,
-        tempData: getTemperatureData(state),
-        windData: getWindData(state),
+        pws: state.pws,
+        currentResult: state.pws.currentResult,
+        // tempData: getTemperatureData(state),
+        // windData: getWindData(state),
     }
 }
 

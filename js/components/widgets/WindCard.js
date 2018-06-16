@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react'
 import { View, StyleSheet, Image, ImageBackground } from 'react-native'
-import { Card, StyledText, CardHeader } from '.'
+import { Card, StyledText, CardHeader, Row } from '.'
 import { Colors, Images, Icons } from '../../resources'
 import SvgUri from 'react-native-svg-uri'
 import Icon from 'react-native-vector-icons/Feather'
@@ -22,33 +22,77 @@ export class WindCard extends Component<Props> {
         const { imageStyle } = styles
         return <Icon name={Icons.wind} style={imageStyle} />
     }
-    render() {
-        const {
-            container,
-            card,
-            innerContainer,
-            imageContainer,
-            image,
-            windText,
-        } = styles
-        const { windspeedmph, winddir } = this.props.windData
-        const transform = { transform: [{ rotate: `${winddir}deg` }] }
+
+    _renderText = (text: string, textStyle: mixed) => {
+        return <StyledText style={textStyle}>{text}</StyledText>
+    }
+
+    _renderLeft = ({ windData }) => {
+        const { winddir } = windData
+        const { sideContainer, leftContainer, windDirText } = styles
+        const displayWindDir = calcWindDirectionText(winddir)
+        return (
+            <View style={[sideContainer, leftContainer]}>
+                <StyledText>{'From'}</StyledText>
+                <StyledText
+                    style={windDirText}>{`${displayWindDir}`}</StyledText>
+            </View>
+        )
+    }
+
+    _renderCompassText = (winddir: number, windspeedmph: number) => {
+        const { compassText, windText, windTextBig } = styles
         const textTransform = { transform: [{ rotate: `${-1 * winddir}deg` }] }
+        const bigText = [windText, windTextBig, textTransform]
+        return (
+            <View style={compassText}>
+                {this._renderText(`${windspeedmph.toFixed(1)}`, bigText)}
+                {this._renderText('MPH', [windText, textTransform])}
+            </View>
+        )
+    }
+
+    _renderCenter = ({ windData }) => {
+        const { imageContainer, image, centerContainer } = styles
+        const { windspeedmph, winddir } = windData
+        const transform = { transform: [{ rotate: `${winddir}deg` }] }
+        return (
+            <View style={centerContainer}>
+                <View style={imageContainer}>
+                    <ImageBackground
+                        source={Images.windCompass}
+                        style={[image, transform]}>
+                        {this._renderCompassText(winddir, windspeedmph)}
+                    </ImageBackground>
+                </View>
+            </View>
+        )
+    }
+
+    _renderRight = ({ windData }) => {
+        const { windgustmph } = windData
+        const { sideContainer, rightContainer, windDirText } = styles
+        return (
+            <View style={[sideContainer, rightContainer]}>
+                <StyledText>{'Gusts'}</StyledText>
+                <StyledText style={windDirText}>{`${windgustmph.toFixed(
+                    1,
+                )}`}</StyledText>
+            </View>
+        )
+    }
+
+    render() {
+        const { container, card, innerContainer } = styles
         return (
             <View style={container}>
                 <Card style={card}>
                     <CardHeader title={'Wind'} image={this._renderIcon()} />
-                    <View style={innerContainer}>
-                        <View style={imageContainer}>
-                            <ImageBackground
-                                source={Images.windCompass}
-                                style={[image, transform]}>
-                                <StyledText style={[windText, textTransform]}>
-                                    {windspeedmph}
-                                </StyledText>
-                            </ImageBackground>
-                        </View>
-                    </View>
+                    <Row style={innerContainer}>
+                        {this._renderLeft(this.props)}
+                        {this._renderCenter(this.props)}
+                        {this._renderRight(this.props)}
+                    </Row>
                 </Card>
             </View>
         )
@@ -83,12 +127,66 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    centerContainer: {
+        flex: 3,
+    },
     imageContainer: {
         height: IMAGE_SIZE,
         width: IMAGE_SIZE,
     },
-    windText: {
+    windTextBig: {
         fontSize: 36,
+    },
+    windText: {
         textAlign: 'center',
+        fontSize: 18,
+    },
+    sideContainer: {
+        flex: 2,
+        justifyContent: 'flex-end',
+        height: IMAGE_SIZE,
+    },
+    leftContainer: {
+        alignItems: 'flex-start',
+    },
+    rightContainer: {
+        alignItems: 'flex-end',
+    },
+    windDirText: {
+        color: Colors.blue,
+        fontSize: 28,
+    },
+    textContainer: {
+        justifyContent: 'center',
+    },
+    compassText: {
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        flexDirection: 'column-reverse',
     },
 })
+
+const RANGE = 360 / 16
+
+const calcWindDirectionText = (windDir: number) => {
+    const DIRECTIONS = [
+        'N',
+        'NNE',
+        'NE',
+        'ENE',
+        'E',
+        'ESE',
+        'SE',
+        'SSE',
+        'S',
+        'SSW',
+        'SW',
+        'WSW',
+        'W',
+        'WNW',
+        'NW',
+        'NNW',
+    ]
+    const val = parseInt(windDir / RANGE + 0.5)
+    return DIRECTIONS[val % 16]
+}

@@ -38,12 +38,13 @@ export const fetchPws = () => async (dispatch: any) => {
 type State = {
     isWorking: boolean,
     device: mixed,
+    currentResult: mixed,
     error: mixed,
 }
 
 type Action =
     | { type: string }
-    | { type: string, pws: mixed }
+    | { type: string, pws: Array<*> }
     | { type: string, error: mixed }
 
 const initialState = {
@@ -61,10 +62,16 @@ export const pws = (state: State = initialState, action: Action) => {
                 isWorking: true,
             }
         case Types.PWS_FETCH_COMPLETED:
-            return {
-                ...state,
-                isWorking: false,
-                device: action.pws && action.pws,
+            if (action.pws) {
+                const [currentResult, ...rest] = action.pws
+                return {
+                    ...state,
+                    isWorking: false,
+                    currentResult,
+                    device: [currentResult, ...rest],
+                }
+            } else {
+                return state
             }
         case Types.PWS_FETCH_FAILED:
             return {
@@ -77,39 +84,29 @@ export const pws = (state: State = initialState, action: Action) => {
 }
 
 /* SELECTORS */
-export const getDevice = (state: { pws: State }) =>
-    state.pws && state.pws.device
+export const getDevice = (state: { pws: State }) => {
+    return state.pws && state.pws.device && state.pws.device
+}
 
-const getCurrentConditions = createSelector(
-    [getDevice],
-    device => device && device[0],
-)
+const getCurrentConditions = createSelector([getDevice], device => {
+    return device && device[0]
+})
 
-export const getTemperatureData = createSelector(
-    [getCurrentConditions],
-    conditions => {
-        if (conditions) {
-            const { date, tempf, feelsLike, dewPoint, humidity } = conditions
-            return { date, tempf, feelsLike, dewPoint, humidity }
-        }
-    },
-)
+export const getTemperatureData = (conditions: any) => {
+    const { date, tempf, feelsLike, dewPoint, humidity } = conditions
+    return { date, tempf, feelsLike, dewPoint, humidity }
+}
 
-export const getWindData = createSelector(
-    [getCurrentConditions],
-    conditions => {
-        if (conditions) {
-            const {
-                date,
-                winddir,
-                windspeedmph,
-                windgustmph,
-                maxdailygust,
-            } = conditions
-            return { date, winddir, windspeedmph, windgustmph, maxdailygust }
-        }
-    },
-)
+export const getWindData = (conditions: any) => {
+    const {
+        date,
+        winddir,
+        windspeedmph,
+        windgustmph,
+        maxdailygust,
+    } = conditions
+    return { date, winddir, windspeedmph, windgustmph, maxdailygust }
+}
 
 export const getRainData = createSelector(
     [getCurrentConditions],

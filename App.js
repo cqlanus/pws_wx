@@ -17,17 +17,17 @@ const store = configureStore()
 
 export class App extends Component {
     _reducerCreate = params => {
-        const defaultReducer = new Reducer(params)
-        return (state, action) => {
-            return defaultReducer(state, action)
-        }
+        // const defaultReducer = new Reducer(params)
+        // return (state, action) => {
+        //     return defaultReducer(state, action)
+        // }
     }
     render() {
         const { PWS, Forecast, Radar } = TabScene
 
         return (
             <Provider store={store}>
-                <RouterWithRedux createReducer={this._reducerCreate}>
+                <RouterWithRedux>
                     <Lightbox>
                         <Modal key={RootIdentifiers.Root}>
                             <Tabs
