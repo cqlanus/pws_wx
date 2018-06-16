@@ -16,7 +16,7 @@ type WindData = {
     windgustmph: number,
     maxdailygust: number,
 }
-const IMAGE_SIZE = 140
+const IMAGE_SIZE = 130
 export class WindCard extends Component<Props> {
     _renderIcon = () => {
         const { imageStyle } = styles
@@ -43,11 +43,11 @@ export class WindCard extends Component<Props> {
     _renderCompassText = (winddir: number, windspeedmph: number) => {
         const { compassText, windText, windTextBig } = styles
         const textTransform = { transform: [{ rotate: `${-1 * winddir}deg` }] }
-        const bigText = [windText, windTextBig, textTransform]
+        const bigText = [windText, windTextBig]
         return (
-            <View style={compassText}>
+            <View style={[compassText, textTransform]}>
                 {this._renderText(`${windspeedmph.toFixed(1)}`, bigText)}
-                {this._renderText('MPH', [windText, textTransform])}
+                {this._renderText('mph', [windText])}
             </View>
         )
     }
@@ -129,9 +129,10 @@ const styles = StyleSheet.create({
     },
     centerContainer: {
         flex: 3,
+        padding: 20,
     },
     imageContainer: {
-        height: IMAGE_SIZE,
+        height: IMAGE_SIZE + 5,
         width: IMAGE_SIZE,
     },
     windTextBig: {
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
     sideContainer: {
         flex: 2,
         justifyContent: 'flex-end',
-        height: IMAGE_SIZE,
+        height: IMAGE_SIZE + 40,
     },
     leftContainer: {
         alignItems: 'flex-start',
@@ -160,9 +161,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     compassText: {
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'column-reverse',
+        // flexDirection: 'column-reverse',
     },
 })
 

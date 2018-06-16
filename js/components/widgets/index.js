@@ -11,4 +11,5 @@ export { Loader } from './Loader'
 /* Complex Widgets */
 export { TemperatureCard } from './TemperatureCard'
 export { WindCard } from './WindCard'
+export { PressureCard } from './PressureCard'
 export { TitleHeader } from './TitleHeader'

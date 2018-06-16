@@ -16,4 +16,9 @@ export { fetchPws } from './pws'
 export { fetchNws } from './nws'
 
 /* SELECTORS */
-export { getTemperatureData, getDevice, getWindData } from './pws'
+export {
+    getTemperatureData,
+    getDevice,
+    getWindData,
+    getPressureData,
+} from './pws'

@@ -7,8 +7,14 @@ import {
     WindCard,
     TitleHeader,
     Loader,
+    PressureCard,
 } from '../components/widgets'
-import { fetchPws, getTemperatureData, getWindData } from '../redux'
+import {
+    fetchPws,
+    getTemperatureData,
+    getWindData,
+    getPressureData,
+} from '../redux'
 
 type Props = {
     currentResult: any,
@@ -27,10 +33,12 @@ class PWS extends Component<Props> {
         if (currentResult) {
             const tempData = getTemperatureData(currentResult)
             const windData = getWindData(currentResult)
+            const pressureData = getPressureData(currentResult)
             return (
                 <View style={cardContainer}>
                     <TemperatureCard tempData={tempData} />
                     <WindCard windData={windData} />
+                    <PressureCard pressureData={pressureData} />
                 </View>
             )
         }

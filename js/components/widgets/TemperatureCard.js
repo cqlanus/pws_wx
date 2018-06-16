@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     row: {
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 10,
     },
     cardContainer: {
         padding: 10,

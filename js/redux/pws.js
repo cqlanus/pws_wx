@@ -134,15 +134,10 @@ export const getRainData = createSelector(
     },
 )
 
-export const getPressureData = createSelector(
-    [getCurrentConditions],
-    conditions => {
-        if (conditions) {
-            const { date, baromrelin, baromabsin } = conditions
-            return { date, baromrelin, baromabsin }
-        }
-    },
-)
+export const getPressureData = (conditions: any) => {
+    const { date, baromrelin, baromabsin } = conditions
+    return { date, baromrelin, baromabsin }
+}
 
 export const getIndoorData = createSelector(
     [getCurrentConditions],
