@@ -8,6 +8,7 @@ import {
     TitleHeader,
     RainCard,
     PressureCard,
+    SolarCard,
 } from '../components/widgets'
 import {
     fetchPws,
@@ -15,6 +16,7 @@ import {
     getWindData,
     getPressureData,
     getRainData,
+    getSolarData,
 } from '../redux'
 
 type Props = {
@@ -36,12 +38,14 @@ class PWS extends Component<Props> {
             const windData = getWindData(currentResult)
             const pressureData = getPressureData(currentResult)
             const rainData = getRainData(currentResult)
+            const solarData = getSolarData(currentResult)
             return (
                 <View style={cardContainer}>
                     <TemperatureCard tempData={tempData} />
                     <WindCard windData={windData} />
                     <PressureCard pressureData={pressureData} />
                     <RainCard rainData={rainData} />
+                    <SolarCard solarData={solarData} />
                 </View>
             )
         }
