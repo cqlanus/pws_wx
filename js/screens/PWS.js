@@ -6,7 +6,7 @@ import {
     TemperatureCard,
     WindCard,
     TitleHeader,
-    Loader,
+    RainCard,
     PressureCard,
 } from '../components/widgets'
 import {
@@ -14,6 +14,7 @@ import {
     getTemperatureData,
     getWindData,
     getPressureData,
+    getRainData,
 } from '../redux'
 
 type Props = {
@@ -34,11 +35,13 @@ class PWS extends Component<Props> {
             const tempData = getTemperatureData(currentResult)
             const windData = getWindData(currentResult)
             const pressureData = getPressureData(currentResult)
+            const rainData = getRainData(currentResult)
             return (
                 <View style={cardContainer}>
                     <TemperatureCard tempData={tempData} />
                     <WindCard windData={windData} />
                     <PressureCard pressureData={pressureData} />
+                    <RainCard rainData={rainData} />
                 </View>
             )
         }
@@ -52,6 +55,7 @@ class PWS extends Component<Props> {
                 <TitleHeader title={'PWS WX'} />
                 <ScrollView
                     style={scrollView}
+                    contentContainerStyle={{ paddingVertical: 10 }}
                     refreshControl={
                         <RefreshControl
                             refreshing={isWorking}
@@ -74,9 +78,7 @@ const styles = StyleSheet.create({
     scrollView: {
         width: '100%%',
     },
-    cardContainer: {
-        marginTop: 10,
-    },
+    cardContainer: {},
 })
 
 const mapState = state => {
@@ -84,8 +86,6 @@ const mapState = state => {
         isWorking: state.pws.isWorking,
         pws: state.pws,
         currentResult: state.pws.currentResult,
-        // tempData: getTemperatureData(state),
-        // windData: getWindData(state),
     }
 }
 

@@ -21,4 +21,5 @@ export {
     getDevice,
     getWindData,
     getPressureData,
+    getRainData,
 } from './pws'

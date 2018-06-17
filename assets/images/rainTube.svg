@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="38px" height="845px" viewBox="0 0 38 845" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>4A46E16E-559A-4647-8962-DAFE95F4D38C</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0.445567809" width="18.5581395" height="839.537835"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="RAIN-TILE" transform="translate(-2758.000000, -1397.000000)">
+            <g id="Group-34" transform="translate(2758.000000, 1397.687245)">
+                <g id="Group-31">
+                    <polygon id="Rectangle-29" fill="#CDD4DA" points="0 9.84362235 37.2838548 9.84362235 37.2838548 331.843622 0 831.843622"></polygon>
+                    <ellipse id="Oval-9" fill="#CDD4DA" cx="18.6419274" cy="333.843622" rx="18.6419274" ry="9.84362235"></ellipse>
+                    <g id="Group-26" transform="translate(19.000000, 6.000000)">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <g id="Mask"></g>
+                        <g mask="url(#mask-2)" id="Combined-Shape" fill="#B6BFC8">
+                            <g transform="translate(-16.496124, 5.020747)">
+                                <path d="M35.0160632,323.546679 L35.0160632,0 L0.515503876,0 L0.515503876,323.546679 C0.515503876,328.129577 8.23871715,331.844749 17.7657835,331.844749 C27.2928499,331.844749 35.0160632,328.129577 35.0160632,823.546679 Z"></path>
+                            </g>
+                        </g>
+                    </g>
+                    <ellipse id="Oval-9" fill="#98A3AE" cx="18.6419274" cy="9.84362235" rx="18.6419274" ry="9.84362235"></ellipse>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

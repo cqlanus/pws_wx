@@ -6,12 +6,16 @@ export const Images = {
     pressureGauge: require('../../assets/images/pressureGauge.png'),
     pressureGauge_mm: require('../../assets/images/pressureGauge_mm.png'),
     pressureGaugePointer: require('../../assets/images/pointer.png'),
+    rainTube: require('../../assets/images/rainTube.png'),
+    rainTubeBg: require('../../assets/images/rainTubeBg.png'),
+    rainTubeTicks: require('../../assets/images/rainTubeTicks.png'),
 }
 
 export const Icons = {
     thermometer: 'thermometer',
     wind: 'wind',
     gauge: 'gauge',
+    rain: 'weather-rainy',
 }
 
 export const Svg = {

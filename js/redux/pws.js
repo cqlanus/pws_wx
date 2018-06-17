@@ -108,31 +108,47 @@ export const getWindData = (conditions: any) => {
     return { date, winddir, windspeedmph, windgustmph, maxdailygust }
 }
 
-export const getRainData = createSelector(
-    [getCurrentConditions],
-    conditions => {
-        if (conditions) {
-            const {
-                date,
-                hourlyrainin,
-                dailyrainin,
-                weeklyrainin,
-                monthlyrainin,
-                totalrainin,
-                lastRain,
-            } = conditions
-            return {
-                date,
-                hourlyrainin,
-                dailyrainin,
-                weeklyrainin,
-                monthlyrainin,
-                totalrainin,
-                lastRain,
-            }
+export const getRainData = (conditions: any) => {
+    const {
+        hourlyrainin,
+        dailyrainin,
+        weeklyrainin,
+        monthlyrainin,
+        totalrainin,
+        lastRain,
+    } = conditions
+    return {
+        hourlyrainin,
+        dailyrainin,
+        weeklyrainin,
+        monthlyrainin,
+        totalrainin,
+        lastRain,
+    }
+}
+
+createSelector([getCurrentConditions], conditions => {
+    if (conditions) {
+        const {
+            date,
+            hourlyrainin,
+            dailyrainin,
+            weeklyrainin,
+            monthlyrainin,
+            totalrainin,
+            lastRain,
+        } = conditions
+        return {
+            date,
+            hourlyrainin,
+            dailyrainin,
+            weeklyrainin,
+            monthlyrainin,
+            totalrainin,
+            lastRain,
         }
-    },
-)
+    }
+})
 
 export const getPressureData = (conditions: any) => {
     const { date, baromrelin, baromabsin } = conditions
