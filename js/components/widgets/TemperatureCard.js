@@ -1,6 +1,11 @@
 // @flow
 import React, { Component } from 'react'
-import { View, StyleSheet, LayoutAnimation } from 'react-native'
+import {
+    View,
+    StyleSheet,
+    LayoutAnimation,
+    TouchableOpacity,
+} from 'react-native'
 import { Row, StyledText, PwsCard, TemperatureGraph } from '.'
 import { Colors, Icons } from '../../resources'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -19,6 +24,7 @@ type TempData = {
 
 type State = {
     expanded: boolean,
+    front: boolean,
 }
 
 const DEGREE = '°'
@@ -26,10 +32,14 @@ const PERCENT = '%'
 export class TemperatureCard extends Component<Props, State> {
     state = {
         expanded: true,
+        front: true,
     }
 
-    _toggle = () => {
+    _animate = () =>
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+
+    _toggle = () => {
+        this._animate()
         this.setState(prev => ({ expanded: !prev.expanded }))
     }
 
@@ -82,25 +92,52 @@ export class TemperatureCard extends Component<Props, State> {
         return <Icon name={Icons.thermometer} style={imageStyle} />
     }
 
-    render() {
+    _flip = () => {
+        this._animate()
+        this.setState(prev => ({ front: !prev.front }))
+    }
+
+    _renderContent = () => {
         const { cardContainer, row } = styles
-        const { expanded } = this.state
+        const { front } = this.state
         const { device } = this.props
         return (
-            <PwsCard
-                title={'Temperature'}
-                icon={this._renderIcon()}
-                handlePress={this._toggle}
-                initial>
-                {/* expanded && (
+            <View>
+                {front ? (
                     <Row style={row}>
                         <View style={cardContainer}>
                             {this._renderCurrentTemp()}
                         </View>
                         {this._renderRight()}
                     </Row>
-                ) */}
-                {<TemperatureGraph lastDay={device} />}
+                ) : (
+                    <TemperatureGraph lastDay={device} />
+                )}
+                <TouchableOpacity
+                    onPress={this._flip}
+                    style={{
+                        padding: 10,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: Colors.blue,
+                    }}>
+                    <StyledText style={{ color: Colors.white }}>
+                        {'Flip'}
+                    </StyledText>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    render() {
+        const { expanded } = this.state
+        return (
+            <PwsCard
+                title={'Temperature'}
+                icon={this._renderIcon()}
+                handlePress={this._toggle}
+                initial>
+                {expanded && this._renderContent()}
             </PwsCard>
         )
     }
