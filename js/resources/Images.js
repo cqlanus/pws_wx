@@ -16,6 +16,7 @@ export const Icons = {
     wind: 'wind',
     gauge: 'gauge',
     rain: 'weather-rainy',
+    sun: 'sun-o',
 }
 
 export const Svg = {

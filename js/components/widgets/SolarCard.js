@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Row, StyledText, Card, CardHeader } from '.'
 import { Images, Colors, Icons } from '../../resources'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 type Props = {
     solarData: any,
@@ -37,7 +37,7 @@ const BORDER_HEIGHT = 150
 export class SolarCard extends Component<Props> {
     _renderIcon = () => {
         const { imageStyle } = styles
-        return <Icon name={Icons.rain} style={imageStyle} />
+        return <Icon name={Icons.sun} style={imageStyle} />
     }
 
     _renderUvItems = (items: Array<number>) => {
