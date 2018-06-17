@@ -1,16 +1,28 @@
 // @flow
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { View, StyleSheet, Image, ImageBackground } from 'react-native'
-import { Row, StyledText, Card, CardHeader } from '.'
-import { Colors, Icons, Images } from '../../resources'
+import { View, StyleSheet, LayoutAnimation } from 'react-native'
+import { Row, StyledText, PwsCard } from '.'
+import { Colors, Icons } from '../../resources'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 type Props = {
     rainData: any,
 }
 
-export class RainCard extends Component<Props> {
+type State = {
+    expanded: boolean,
+}
+
+export class RainCard extends Component<Props, State> {
+    state = {
+        expanded: true,
+    }
+
+    _toggle = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+        this.setState(prev => ({ expanded: !prev.expanded }))
+    }
+
     _renderIcon = () => {
         const { imageStyle } = styles
         return <Icon name={Icons.rain} style={imageStyle} />
@@ -59,7 +71,6 @@ export class RainCard extends Component<Props> {
     }
 
     render() {
-        const { container, card } = styles
         const {
             hourlyrainin,
             dailyrainin,
@@ -68,10 +79,13 @@ export class RainCard extends Component<Props> {
             totalrainin,
             lastRain,
         } = this.props.rainData
+        const { expanded } = this.state
         return (
-            <View style={container}>
-                <Card style={card}>
-                    <CardHeader title={'Rain'} image={this._renderIcon()} />
+            <PwsCard
+                title={'Rain'}
+                icon={this._renderIcon()}
+                handlePress={this._toggle}>
+                {expanded && (
                     <Row style={{ justifyContent: 'center', padding: 20 }}>
                         {this._renderColumn(hourlyrainin, monthlyrainin, 'hr')}
                         {this._renderColumn(dailyrainin, monthlyrainin, 'day')}
@@ -86,24 +100,13 @@ export class RainCard extends Component<Props> {
                             'month',
                         )}
                     </Row>
-                </Card>
-            </View>
+                )}
+            </PwsCard>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        width: '100%',
-        marginTop: 10,
-    },
-    card: {
-        width: '98%',
-        flex: 1,
-        backgroundColor: Colors.white,
-    },
     imageStyle: {
         fontSize: 40,
         color: Colors.blue,

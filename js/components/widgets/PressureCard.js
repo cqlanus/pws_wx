@@ -1,7 +1,14 @@
 // @flow
 import React, { Component } from 'react'
-import { View, StyleSheet, ImageBackground, Image, Switch } from 'react-native'
-import { Card, CardHeader, StyledText, Row } from '.'
+import {
+    View,
+    StyleSheet,
+    ImageBackground,
+    Image,
+    Switch,
+    LayoutAnimation,
+} from 'react-native'
+import { StyledText, Row, PwsCard } from '.'
 import { Colors, Icons, Images } from '../../resources'
 import Icon from 'react-native-vector-icons/Entypo'
 
@@ -11,12 +18,19 @@ type Props = {
 
 type State = {
     inches: boolean,
+    expanded: boolean,
 }
 
 const IMAGE_SIZE = 130
 export class PressureCard extends Component<Props, State> {
     state = {
         inches: true,
+        expanded: true,
+    }
+
+    _toggle = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+        this.setState(prev => ({ expanded: !prev.expanded }))
     }
 
     _renderIcon = () => {
@@ -57,7 +71,13 @@ export class PressureCard extends Component<Props, State> {
     }
 
     _renderCenter = ({ pressureData }) => {
-        const { imageContainer, image, centerContainer } = styles
+        const {
+            imageContainer,
+            image,
+            centerContainer,
+            pressureGauge,
+            pressureGaugeContainer,
+        } = styles
         const { baromrelin } = pressureData
         const { inches } = this.state
         const gauge = inches ? Images.pressureGauge : Images.pressureGauge_mm
@@ -67,13 +87,10 @@ export class PressureCard extends Component<Props, State> {
             <View style={centerContainer}>
                 <View style={imageContainer}>
                     <ImageBackground source={gauge} style={[image]}>
-                        <View style={{ width: 100, height: 100 }}>
+                        <View style={pressureGaugeContainer}>
                             <Image
                                 source={Images.pressureGaugePointer}
-                                style={[
-                                    { width: null, height: null, flex: 1 },
-                                    transform,
-                                ]}
+                                style={[pressureGauge, transform]}
                             />
                         </View>
                     </ImageBackground>
@@ -85,34 +102,25 @@ export class PressureCard extends Component<Props, State> {
     _toggleUnits = () => this.setState(prev => ({ inches: !prev.inches }))
 
     render() {
-        const { container, card, centerContainer } = styles
-        const { inches } = this.state
+        const { centerContainer } = styles
+        const { expanded } = this.state
         return (
-            <View style={container}>
-                <Card style={card}>
-                    <CardHeader title={'Pressure'} image={this._renderIcon()} />
+            <PwsCard
+                title={'Pressure'}
+                icon={this._renderIcon()}
+                handlePress={this._toggle}>
+                {expanded && (
                     <Row style={centerContainer}>
                         {this._renderBottom(this.props)}
                         {this._renderCenter(this.props)}
                     </Row>
-                </Card>
-            </View>
+                )}
+            </PwsCard>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        width: '100%',
-        marginTop: 10,
-    },
-    card: {
-        width: '98%',
-        flex: 1,
-        backgroundColor: Colors.white,
-    },
     imageStyle: {
         fontSize: 40,
         color: Colors.blue,
@@ -137,6 +145,15 @@ const styles = StyleSheet.create({
     pressureTxt: {
         color: Colors.blue,
         fontSize: 28,
+    },
+    pressureGauge: {
+        width: null,
+        height: null,
+        flex: 1,
+    },
+    pressureGaugeContainer: {
+        width: 100,
+        height: 100,
     },
 })
 

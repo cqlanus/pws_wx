@@ -1,28 +1,30 @@
 // @flow
 import React, { Component } from 'react'
-import { View, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { StyledText, Row } from '.'
 import { Colors } from '../../resources'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 type Props = {
     title: string,
     image: mixed,
     style: mixed,
+    handlePress: () => void,
 }
 
 export class CardHeader extends Component<Props> {
     render() {
-        const { title, image, style } = this.props
-        const { container, titleStyle, row, line } = styles
+        const { title, image, style, handlePress } = this.props
+        const { container, titleStyle, row } = styles
         return (
-            <View sytle={container}>
+            <TouchableOpacity
+                activeOpacity={1}
+                sytle={[container]}
+                onPress={handlePress}>
                 <Row style={[row, style]}>
                     {image}
                     <StyledText style={titleStyle}>{title}</StyledText>
                 </Row>
-                <View style={line} />
-            </View>
+            </TouchableOpacity>
         )
     }
 }
@@ -34,12 +36,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 5,
         paddingHorizontal: 20,
-    },
-    line: {
-        width: '100%',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: Colors.black,
-        zIndex: 1,
     },
     titleStyle: {
         fontSize: 24,

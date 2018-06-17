@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from 'react'
-import { View, StyleSheet } from 'react-native'
-import { Row, StyledText, Card, CardHeader } from '.'
-import { Images, Colors, Icons } from '../../resources'
+import { View, StyleSheet, LayoutAnimation } from 'react-native'
+import { Row, StyledText, PwsCard } from '.'
+import { Colors, Icons } from '../../resources'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 type Props = {
@@ -32,9 +32,22 @@ const UV_INDECES = [
     },
 ]
 
+type State = {
+    expanded: boolean,
+}
+
 const BORDER_HEIGHT = 150
 
-export class SolarCard extends Component<Props> {
+export class SolarCard extends Component<Props, State> {
+    state = {
+        expanded: true,
+    }
+
+    _toggle = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+        this.setState(prev => ({ expanded: !prev.expanded }))
+    }
+
     _renderIcon = () => {
         const { imageStyle } = styles
         return <Icon name={Icons.sun} style={imageStyle} />
@@ -60,10 +73,15 @@ export class SolarCard extends Component<Props> {
     }
 
     _renderUvRow = () => {
-        const { uvRowContainer, uvRow, solarSubtitle } = styles
+        const {
+            uvRowContainer,
+            uvRow,
+            solarSubtitle,
+            uvContainerContainer,
+        } = styles
         const { uv } = this.props.solarData
         return (
-            <View style={{ alignItems: 'center' }}>
+            <View style={uvContainerContainer}>
                 <StyledText style={solarSubtitle}>{'UV Index'}</StyledText>
                 <Row style={uvRowContainer}>
                     {UV_INDECES.map((obj, idx) => {
@@ -81,11 +99,15 @@ export class SolarCard extends Component<Props> {
     }
 
     _renderSolarRadiation = () => {
-        const { solarContainer, solarText, solarSubtitle } = styles
+        const {
+            solarContainer,
+            solarText,
+            solarSubtitle,
+            solarContainerContainer,
+        } = styles
         const { solarradiation } = this.props.solarData
         return (
-            <View
-                style={{ width: '100%', alignItems: 'center', marginTop: 15 }}>
+            <View style={solarContainerContainer}>
                 <StyledText style={solarSubtitle}>
                     {'Solar Radiation'}
                 </StyledText>
@@ -100,33 +122,25 @@ export class SolarCard extends Component<Props> {
     }
 
     render() {
-        const { container, card, innerContainer } = styles
+        const { innerContainer } = styles
+        const { expanded } = this.state
         return (
-            <View style={container}>
-                <Card style={card}>
-                    <CardHeader title={'Sun'} image={this._renderIcon()} />
+            <PwsCard
+                title={'Sun'}
+                icon={this._renderIcon()}
+                handlePress={this._toggle}>
+                {expanded && (
                     <View style={innerContainer}>
                         {this._renderUvRow()}
                         {this._renderSolarRadiation()}
                     </View>
-                </Card>
-            </View>
+                )}
+            </PwsCard>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        width: '100%',
-        marginTop: 10,
-    },
-    card: {
-        width: '98%',
-        flex: 1,
-        backgroundColor: Colors.white,
-    },
     imageStyle: {
         fontSize: 40,
         color: Colors.blue,
@@ -171,5 +185,13 @@ const styles = StyleSheet.create({
     solarSubtitle: {
         fontSize: 18,
         color: Colors.blue,
+    },
+    solarContainerContainer: {
+        width: '100%',
+        alignItems: 'center',
+        marginTop: 15,
+    },
+    uvContainerContainer: {
+        alignItems: 'center',
     },
 })

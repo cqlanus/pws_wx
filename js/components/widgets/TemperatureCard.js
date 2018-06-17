@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react'
-import { View, StyleSheet } from 'react-native'
-import { Row, Card, StyledText, CardHeader } from '.'
+import { View, StyleSheet, LayoutAnimation } from 'react-native'
+import { Row, StyledText, PwsCard } from '.'
 import { Colors, Icons } from '../../resources'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -16,9 +16,22 @@ type TempData = {
     feelsLike: number,
 }
 
+type State = {
+    expanded: boolean,
+}
+
 const DEGREE = '°'
 const PERCENT = '%'
-export class TemperatureCard extends Component<Props> {
+export class TemperatureCard extends Component<Props, State> {
+    state = {
+        expanded: true,
+    }
+
+    _toggle = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+        this.setState(prev => ({ expanded: !prev.expanded }))
+    }
+
     _greyText = (text: string) => (
         <StyledText style={styles.currentText}>{text}</StyledText>
     )
@@ -69,37 +82,28 @@ export class TemperatureCard extends Component<Props> {
     }
 
     render() {
-        const { container, card, cardContainer, row } = styles
+        const { cardContainer, row } = styles
+        const { expanded } = this.state
         return (
-            <View style={container}>
-                <Card style={card}>
-                    <CardHeader
-                        title={'Temperature'}
-                        image={this._renderIcon()}
-                    />
+            <PwsCard
+                title={'Temperature'}
+                icon={this._renderIcon()}
+                handlePress={this._toggle}
+                initial>
+                {expanded && (
                     <Row style={row}>
                         <View style={cardContainer}>
                             {this._renderCurrentTemp()}
                         </View>
                         {this._renderRight()}
                     </Row>
-                </Card>
-            </View>
+                )}
+            </PwsCard>
         )
     }
 }
 const BORDER_HEIGHT = 120
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        width: '100%',
-    },
-    card: {
-        width: '98%',
-        flex: 1,
-        backgroundColor: Colors.white,
-    },
     row: {
         justifyContent: 'center',
         alignItems: 'center',

@@ -1,9 +1,13 @@
 // @flow
 import React, { Component } from 'react'
-import { View, StyleSheet, Image, ImageBackground } from 'react-native'
-import { Card, StyledText, CardHeader, Row } from '.'
+import {
+    View,
+    StyleSheet,
+    LayoutAnimation,
+    ImageBackground,
+} from 'react-native'
+import { StyledText, Row, PwsCard } from '.'
 import { Colors, Images, Icons } from '../../resources'
-import SvgUri from 'react-native-svg-uri'
 import Icon from 'react-native-vector-icons/Feather'
 
 type Props = {
@@ -16,8 +20,22 @@ type WindData = {
     windgustmph: number,
     maxdailygust: number,
 }
+
+type State = {
+    expanded: boolean,
+}
+
 const IMAGE_SIZE = 130
-export class WindCard extends Component<Props> {
+export class WindCard extends Component<Props, State> {
+    state = {
+        expanded: true,
+    }
+
+    _toggle = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+        this.setState(prev => ({ expanded: !prev.expanded }))
+    }
+
     _renderIcon = () => {
         const { imageStyle } = styles
         return <Icon name={Icons.wind} style={imageStyle} />
@@ -83,34 +101,26 @@ export class WindCard extends Component<Props> {
     }
 
     render() {
-        const { container, card, innerContainer } = styles
+        const { innerContainer } = styles
+        const { expanded } = this.state
         return (
-            <View style={container}>
-                <Card style={card}>
-                    <CardHeader title={'Wind'} image={this._renderIcon()} />
+            <PwsCard
+                icon={this._renderIcon()}
+                title={'Wind'}
+                handlePress={this._toggle}>
+                {expanded && (
                     <Row style={innerContainer}>
                         {this._renderLeft(this.props)}
                         {this._renderCenter(this.props)}
                         {this._renderRight(this.props)}
                     </Row>
-                </Card>
-            </View>
+                )}
+            </PwsCard>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        width: '100%',
-        marginTop: 10,
-    },
-    card: {
-        width: '98%',
-        flex: 1,
-        backgroundColor: Colors.white,
-    },
     imageStyle: {
         fontSize: 40,
         color: Colors.blue,

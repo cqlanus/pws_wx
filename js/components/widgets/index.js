@@ -7,6 +7,7 @@ export { Row } from './Row'
 export { Card } from './Card'
 export { CardHeader } from './CardHeader'
 export { Loader } from './Loader'
+export { PwsCard } from './PwsCard'
 
 /* Complex Widgets */
 export { TemperatureCard } from './TemperatureCard'
