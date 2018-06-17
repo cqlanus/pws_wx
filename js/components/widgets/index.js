@@ -10,9 +10,14 @@ export { Loader } from './Loader'
 export { PwsCard } from './PwsCard'
 
 /* Complex Widgets */
+export { TitleHeader } from './TitleHeader'
+
+/* Cards */
 export { TemperatureCard } from './TemperatureCard'
 export { WindCard } from './WindCard'
 export { PressureCard } from './PressureCard'
 export { RainCard } from './RainCard'
 export { SolarCard } from './SolarCard'
-export { TitleHeader } from './TitleHeader'
+
+/* Graphs */
+export { TemperatureGraph } from './TemperatureGraph'

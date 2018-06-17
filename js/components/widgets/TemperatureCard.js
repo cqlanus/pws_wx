@@ -1,12 +1,13 @@
 // @flow
 import React, { Component } from 'react'
 import { View, StyleSheet, LayoutAnimation } from 'react-native'
-import { Row, StyledText, PwsCard } from '.'
+import { Row, StyledText, PwsCard, TemperatureGraph } from '.'
 import { Colors, Icons } from '../../resources'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 type Props = {
     tempData: TempData,
+    device: Array<*>,
 }
 
 type TempData = {
@@ -84,20 +85,22 @@ export class TemperatureCard extends Component<Props, State> {
     render() {
         const { cardContainer, row } = styles
         const { expanded } = this.state
+        const { device } = this.props
         return (
             <PwsCard
                 title={'Temperature'}
                 icon={this._renderIcon()}
                 handlePress={this._toggle}
                 initial>
-                {expanded && (
+                {/* expanded && (
                     <Row style={row}>
                         <View style={cardContainer}>
                             {this._renderCurrentTemp()}
                         </View>
                         {this._renderRight()}
                     </Row>
-                )}
+                ) */}
+                {<TemperatureGraph lastDay={device} />}
             </PwsCard>
         )
     }

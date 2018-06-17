@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { View, StyleSheet, LayoutAnimation } from 'react-native'
 import { Row, StyledText, PwsCard } from '.'
 import { Colors, Icons } from '../../resources'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/Feather'
 
 type Props = {
     solarData: any,

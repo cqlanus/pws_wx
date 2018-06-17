@@ -23,6 +23,7 @@ type Props = {
     currentResult: any,
     isWorking: boolean,
     fetchPws: () => void,
+    pws: any,
 }
 
 class PWS extends Component<Props> {
@@ -31,9 +32,10 @@ class PWS extends Component<Props> {
     }
 
     _renderCards = () => {
-        const { currentResult } = this.props
+        const { currentResult, pws } = this.props
         const { cardContainer } = styles
         if (currentResult) {
+            const { device } = pws
             const tempData = getTemperatureData(currentResult)
             const windData = getWindData(currentResult)
             const pressureData = getPressureData(currentResult)
@@ -41,7 +43,7 @@ class PWS extends Component<Props> {
             const solarData = getSolarData(currentResult)
             return (
                 <View style={cardContainer}>
-                    <TemperatureCard tempData={tempData} />
+                    <TemperatureCard tempData={tempData} device={device} />
                     <WindCard windData={windData} />
                     <PressureCard pressureData={pressureData} />
                     <RainCard rainData={rainData} />
