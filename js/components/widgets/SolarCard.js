@@ -1,12 +1,20 @@
 // @flow
 import React, { Component } from 'react'
 import { View, StyleSheet, LayoutAnimation } from 'react-native'
-import { Row, StyledText, PwsCard } from '.'
+import { Row, StyledText, PwsCard, FlipButton, SolarGraph } from '.'
 import { Colors, Icons } from '../../resources'
 import Icon from 'react-native-vector-icons/Feather'
+import { simpleAnimate } from '../../utils'
+import type { Device } from '../../types'
 
 type Props = {
     solarData: any,
+    device: Device,
+}
+
+type State = {
+    expanded: boolean,
+    front: boolean,
 }
 
 const UV_INDECES = [
@@ -32,19 +40,21 @@ const UV_INDECES = [
     },
 ]
 
-type State = {
-    expanded: boolean,
-}
-
 const BORDER_HEIGHT = 150
 
 export class SolarCard extends Component<Props, State> {
     state = {
         expanded: true,
+        front: true,
+    }
+
+    _flip = () => {
+        simpleAnimate()
+        this.setState(prev => ({ front: !prev.front }))
     }
 
     _toggle = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+        simpleAnimate
         this.setState(prev => ({ expanded: !prev.expanded }))
     }
 
@@ -122,19 +132,23 @@ export class SolarCard extends Component<Props, State> {
     }
 
     render() {
+        const { device } = this.props
         const { innerContainer } = styles
-        const { expanded } = this.state
+        const { front } = this.state
         return (
             <PwsCard
                 title={'Sun'}
                 icon={this._renderIcon()}
                 handlePress={this._toggle}>
-                {expanded && (
+                {front ? (
                     <View style={innerContainer}>
                         {this._renderUvRow()}
                         {this._renderSolarRadiation()}
                     </View>
+                ) : (
+                    <SolarGraph lastDay={device} />
                 )}
+                <FlipButton onPress={this._flip} />
             </PwsCard>
         )
     }

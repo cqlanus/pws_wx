@@ -27,7 +27,9 @@ export class PressureGraph extends Component<Props> {
             <View style={{ paddingHorizontal: 20, paddingBottom: 10 }}>
                 <ScrollView horizontal>
                     <VictoryChart width={800} theme={VictoryTheme.material}>
-                        <VictoryLine data={pressure} />
+                        <VictoryGroup colorScale={'qualitative'}>
+                            <VictoryLine data={pressure} />
+                        </VictoryGroup>
                         <VictoryAxis
                             fixLabelOverlap
                             tickValues={dates}

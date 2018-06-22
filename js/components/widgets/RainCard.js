@@ -1,25 +1,35 @@
 // @flow
 import React, { Component } from 'react'
-import { View, StyleSheet, LayoutAnimation } from 'react-native'
-import { Row, StyledText, PwsCard } from '.'
+import { View, StyleSheet } from 'react-native'
+import { Row, StyledText, PwsCard, FlipButton, RainGraph } from '.'
 import { Colors, Icons } from '../../resources'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { simpleAnimate } from '../../utils'
+import type { Device } from '../../types'
 
 type Props = {
     rainData: any,
+    device: Device,
 }
 
 type State = {
     expanded: boolean,
+    front: boolean,
 }
 
 export class RainCard extends Component<Props, State> {
     state = {
         expanded: true,
+        front: true,
+    }
+
+    _flip = () => {
+        simpleAnimate()
+        this.setState(prev => ({ front: !prev.front }))
     }
 
     _toggle = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+        simpleAnimate()
         this.setState(prev => ({ expanded: !prev.expanded }))
     }
 
@@ -71,6 +81,7 @@ export class RainCard extends Component<Props, State> {
     }
 
     render() {
+        const { device, rainData } = this.props
         const {
             hourlyrainin,
             dailyrainin,
@@ -78,14 +89,14 @@ export class RainCard extends Component<Props, State> {
             monthlyrainin,
             totalrainin,
             lastRain,
-        } = this.props.rainData
-        const { expanded } = this.state
+        } = rainData
+        const { front } = this.state
         return (
             <PwsCard
                 title={'Rain'}
                 icon={this._renderIcon()}
                 handlePress={this._toggle}>
-                {expanded && (
+                {front ? (
                     <Row style={{ justifyContent: 'center', padding: 20 }}>
                         {this._renderColumn(hourlyrainin, monthlyrainin, 'hr')}
                         {this._renderColumn(dailyrainin, monthlyrainin, 'day')}
@@ -100,7 +111,10 @@ export class RainCard extends Component<Props, State> {
                             'month',
                         )}
                     </Row>
+                ) : (
+                    <RainGraph lastDay={device} />
                 )}
+                <FlipButton onPress={this._flip} />
             </PwsCard>
         )
     }

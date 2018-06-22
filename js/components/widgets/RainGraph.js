@@ -6,16 +6,60 @@ import {
     VictoryLine,
     VictoryTheme,
     VictoryGroup,
-    VictoryZoomContainer,
     VictoryAxis,
     VictoryLegend,
 } from 'victory-native'
-import moment from 'moment'
+import type { Device } from '../../types'
+import { formatTimeTick } from '../../utils'
 
-type Props = {}
+type Props = {
+    lastDay: Device,
+}
 
-export class WindGraph extends Component<Props> {
+export class RainGraph extends Component<Props> {
     render() {
-        return <View />
+        const { lastDay } = this.props
+        const dailyRain = lastDay.map(r => r.dailyrainin)
+        const hourlyRain = lastDay.map(r => r.hourlyrainin)
+        const dates = lastDay.map(reading => reading.date)
+        const { axisPadding } = styles
+        return (
+            <View style={{ paddingHorizontal: 20, paddingBottom: 10 }}>
+                <ScrollView horizontal>
+                    <VictoryChart width={800} theme={VictoryTheme.material}>
+                        <VictoryGroup colorScale={'qualitative'}>
+                            <VictoryLine data={dailyRain} />
+                            <VictoryLine data={hourlyRain} />
+                        </VictoryGroup>
+                        <VictoryAxis
+                            fixLabelOverlap
+                            tickValues={dates}
+                            tickCount={10}
+                            invertAxis
+                            tickFormat={formatTimeTick}
+                            label={'time'}
+                            style={{ axisLabel: axisPadding }}
+                        />
+                        <VictoryAxis dependentAxis />
+                        <VictoryLegend
+                            orientation={'horizontal'}
+                            colorScale={'qualitative'}
+                            x={50}
+                            y={10}
+                            data={[
+                                { name: 'daily rain' },
+                                { name: 'hourly rain' },
+                            ]}
+                        />
+                    </VictoryChart>
+                </ScrollView>
+            </View>
+        )
     }
+}
+
+const styles = {
+    axisPadding: {
+        padding: 30,
+    },
 }

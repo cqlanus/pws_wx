@@ -21,5 +21,4 @@ export const Icons = {
 
 export const Svg = {
     windCompass: require('../../assets/images/windCompass.svg'),
-    arrow: require('../../assets/images/right-arrow.svg'),
 }
