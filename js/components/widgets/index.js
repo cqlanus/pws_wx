@@ -8,6 +8,8 @@ export { Card } from './Card'
 export { CardHeader } from './CardHeader'
 export { Loader } from './Loader'
 export { PwsCard } from './PwsCard'
+export { FlipButton } from './FlipButton'
+export { XAxis } from './XAxis'
 
 /* Complex Widgets */
 export { TitleHeader } from './TitleHeader'
@@ -21,3 +23,5 @@ export { SolarCard } from './SolarCard'
 
 /* Graphs */
 export { TemperatureGraph } from './TemperatureGraph'
+export { WindGraph } from './WindGraph'
+export { PressureGraph } from './PressureGraph'

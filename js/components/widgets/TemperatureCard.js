@@ -1,13 +1,9 @@
 // @flow
 import React, { Component } from 'react'
-import {
-    View,
-    StyleSheet,
-    LayoutAnimation,
-    TouchableOpacity,
-} from 'react-native'
-import { Row, StyledText, PwsCard, TemperatureGraph } from '.'
+import { View, StyleSheet } from 'react-native'
+import { Row, StyledText, PwsCard, TemperatureGraph, FlipButton } from '.'
 import { Colors, Icons } from '../../resources'
+import { simpleAnimate } from '../../utils'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 type Props = {
@@ -35,11 +31,8 @@ export class TemperatureCard extends Component<Props, State> {
         front: true,
     }
 
-    _animate = () =>
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-
     _toggle = () => {
-        this._animate()
+        simpleAnimate()
         this.setState(prev => ({ expanded: !prev.expanded }))
     }
 
@@ -93,7 +86,7 @@ export class TemperatureCard extends Component<Props, State> {
     }
 
     _flip = () => {
-        this._animate()
+        simpleAnimate()
         this.setState(prev => ({ front: !prev.front }))
     }
 
@@ -113,18 +106,7 @@ export class TemperatureCard extends Component<Props, State> {
                 ) : (
                     <TemperatureGraph lastDay={device} />
                 )}
-                <TouchableOpacity
-                    onPress={this._flip}
-                    style={{
-                        padding: 10,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: Colors.blue,
-                    }}>
-                    <StyledText style={{ color: Colors.white }}>
-                        {'Flip'}
-                    </StyledText>
-                </TouchableOpacity>
+                <FlipButton onPress={this._flip} />
             </View>
         )
     }

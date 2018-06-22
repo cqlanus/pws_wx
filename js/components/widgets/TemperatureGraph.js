@@ -1,27 +1,19 @@
 // @flow
 import React, { Component } from 'react'
-import {
-    View,
-    ScrollView,
-    Dimensions,
-    LayoutAnimation,
-    TouchableHighlight,
-} from 'react-native'
-import { StyledText } from '.'
-import { Colors } from '../../resources'
+import { View, ScrollView, Dimensions, LayoutAnimation } from 'react-native'
 import {
     VictoryChart,
     VictoryLine,
     VictoryTheme,
     VictoryGroup,
-    VictoryZoomContainer,
     VictoryAxis,
     VictoryLegend,
 } from 'victory-native'
-import moment from 'moment'
+import { formatTimeTick } from '../../utils'
+import type { Device } from '../../types'
 
 type Props = {
-    lastDay: Array<*>,
+    lastDay: Device,
 }
 
 type State = {
@@ -33,11 +25,6 @@ const LARGE = 600
 export class TemperatureGraph extends Component<Props, State> {
     state = {
         expanded: false,
-    }
-
-    _formatTick = (val: string) => {
-        const date = moment(val).format('h:mma')
-        return date
     }
 
     _toggleWidth = () => {
@@ -59,10 +46,7 @@ export class TemperatureGraph extends Component<Props, State> {
         return (
             <View>
                 <ScrollView horizontal>
-                    <VictoryChart
-                        width={width}
-                        containerComponent={<VictoryZoomContainer />}
-                        theme={VictoryTheme.material}>
+                    <VictoryChart width={800} theme={VictoryTheme.material}>
                         <VictoryGroup colorScale={'qualitative'}>
                             <VictoryLine data={temps} />
                             <VictoryLine data={dewPoints} />
@@ -71,8 +55,9 @@ export class TemperatureGraph extends Component<Props, State> {
                         <VictoryAxis
                             fixLabelOverlap
                             tickValues={dates}
-                            tickCount={5}
-                            tickFormat={this._formatTick}
+                            tickCount={10}
+                            invertAxis
+                            tickFormat={formatTimeTick}
                         />
                         <VictoryAxis
                             label={'temp'}
@@ -95,7 +80,6 @@ export class TemperatureGraph extends Component<Props, State> {
                             colorScale={'qualitative'}
                             x={50}
                             y={10}
-                            // padding={{ left: 200 }}
                             data={[
                                 { name: 'temps' },
                                 { name: 'dew point' },

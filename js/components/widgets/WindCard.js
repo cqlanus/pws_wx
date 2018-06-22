@@ -1,17 +1,15 @@
 // @flow
 import React, { Component } from 'react'
-import {
-    View,
-    StyleSheet,
-    LayoutAnimation,
-    ImageBackground,
-} from 'react-native'
-import { StyledText, Row, PwsCard } from '.'
+import { View, StyleSheet, ImageBackground } from 'react-native'
+import { StyledText, Row, FlipButton, PwsCard, WindGraph } from '.'
 import { Colors, Images, Icons } from '../../resources'
 import Icon from 'react-native-vector-icons/Feather'
+import type { Device } from '../../types'
+import { simpleAnimate } from '../../utils'
 
 type Props = {
     windData: WindData,
+    device: Device,
 }
 
 type WindData = {
@@ -23,16 +21,23 @@ type WindData = {
 
 type State = {
     expanded: boolean,
+    front: boolean,
 }
 
 const IMAGE_SIZE = 130
 export class WindCard extends Component<Props, State> {
     state = {
         expanded: true,
+        front: true,
+    }
+
+    _flip = () => {
+        simpleAnimate()
+        this.setState(prev => ({ front: !prev.front }))
     }
 
     _toggle = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+        simpleAnimate()
         this.setState(prev => ({ expanded: !prev.expanded }))
     }
 
@@ -101,20 +106,25 @@ export class WindCard extends Component<Props, State> {
     }
 
     render() {
+        const { device } = this.props
         const { innerContainer } = styles
-        const { expanded } = this.state
+        const { front } = this.state
         return (
             <PwsCard
                 icon={this._renderIcon()}
                 title={'Wind'}
                 handlePress={this._toggle}>
-                {expanded && (
+                {front ? (
                     <Row style={innerContainer}>
                         {this._renderLeft(this.props)}
                         {this._renderCenter(this.props)}
                         {this._renderRight(this.props)}
                     </Row>
+                ) : (
+                    <WindGraph lastDay={device} />
                 )}
+
+                <FlipButton onPress={this._flip} />
             </PwsCard>
         )
     }
@@ -173,7 +183,6 @@ const styles = StyleSheet.create({
     compassText: {
         alignItems: 'center',
         justifyContent: 'center',
-        // flexDirection: 'column-reverse',
     },
 })
 

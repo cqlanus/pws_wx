@@ -44,10 +44,10 @@ class PWS extends Component<Props> {
             return (
                 <View style={cardContainer}>
                     <TemperatureCard tempData={tempData} device={device} />
-                    <WindCard windData={windData} />
-                    <PressureCard pressureData={pressureData} />
-                    <RainCard rainData={rainData} />
-                    <SolarCard solarData={solarData} />
+                    <WindCard windData={windData} device={device} />
+                    <PressureCard pressureData={pressureData} device={device} />
+                    <RainCard rainData={rainData} device={device} />
+                    <SolarCard solarData={solarData} device={device} />
                 </View>
             )
         }

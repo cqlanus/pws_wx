@@ -8,17 +8,21 @@ import {
     Switch,
     LayoutAnimation,
 } from 'react-native'
-import { StyledText, Row, PwsCard } from '.'
+import { StyledText, Row, PwsCard, FlipButton, PressureGraph } from '.'
 import { Colors, Icons, Images } from '../../resources'
 import Icon from 'react-native-vector-icons/Entypo'
+import { simpleAnimate } from '../../utils'
+import type { Device } from '../../types'
 
 type Props = {
     pressureData: any,
+    device: Device,
 }
 
 type State = {
     inches: boolean,
     expanded: boolean,
+    front: boolean,
 }
 
 const IMAGE_SIZE = 130
@@ -26,6 +30,12 @@ export class PressureCard extends Component<Props, State> {
     state = {
         inches: true,
         expanded: true,
+        front: true,
+    }
+
+    _flip = () => {
+        simpleAnimate()
+        this.setState(prev => ({ front: !prev.front }))
     }
 
     _toggle = () => {
@@ -102,19 +112,23 @@ export class PressureCard extends Component<Props, State> {
     _toggleUnits = () => this.setState(prev => ({ inches: !prev.inches }))
 
     render() {
+        const { device } = this.props
         const { centerContainer } = styles
-        const { expanded } = this.state
+        const { front } = this.state
         return (
             <PwsCard
                 title={'Pressure'}
                 icon={this._renderIcon()}
                 handlePress={this._toggle}>
-                {expanded && (
+                {front ? (
                     <Row style={centerContainer}>
                         {this._renderBottom(this.props)}
                         {this._renderCenter(this.props)}
                     </Row>
+                ) : (
+                    <PressureGraph lastDay={device} />
                 )}
+                <FlipButton onPress={this._flip} />
             </PwsCard>
         )
     }
