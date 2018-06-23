@@ -21,4 +21,12 @@ export type Coords = {
     altitude: number,
 }
 
-export type { Reading, Device } from './pws'
+export type {
+    Reading,
+    Device,
+    CurrentWindData,
+    CurrentTempData,
+    CurrentRainData,
+    CurrentPressureData,
+    CurrentSolarData,
+} from './pws'

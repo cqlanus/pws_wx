@@ -5,10 +5,10 @@ import { Row, StyledText, PwsCard, FlipButton, RainGraph } from '.'
 import { Colors, Icons } from '../../resources'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { simpleAnimate } from '../../utils'
-import type { Device } from '../../types'
+import type { Device, CurrentRainData } from '../../types'
 
 type Props = {
-    rainData: any,
+    rainData: CurrentRainData,
     device: Device,
 }
 

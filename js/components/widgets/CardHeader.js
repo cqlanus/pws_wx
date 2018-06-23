@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { StyledText, Row } from '.'
 import { Colors } from '../../resources'
 

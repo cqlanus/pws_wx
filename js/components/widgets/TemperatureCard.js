@@ -5,17 +5,11 @@ import { Row, StyledText, PwsCard, TemperatureGraph, FlipButton } from '.'
 import { Colors, Icons } from '../../resources'
 import { simpleAnimate } from '../../utils'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import type { CurrentTempData, Device } from '../../types'
 
 type Props = {
-    tempData: TempData,
-    device: Array<*>,
-}
-
-type TempData = {
-    tempf: number,
-    humidity: number,
-    dewPoint: number,
-    feelsLike: number,
+    tempData: CurrentTempData,
+    device: Device,
 }
 
 type State = {

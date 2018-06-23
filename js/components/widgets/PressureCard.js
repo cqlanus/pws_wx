@@ -12,10 +12,10 @@ import { StyledText, Row, PwsCard, FlipButton, PressureGraph } from '.'
 import { Colors, Icons, Images } from '../../resources'
 import Icon from 'react-native-vector-icons/Entypo'
 import { simpleAnimate } from '../../utils'
-import type { Device } from '../../types'
+import type { Device, CurrentPressureData } from '../../types'
 
 type Props = {
-    pressureData: any,
+    pressureData: CurrentPressureData,
     device: Device,
 }
 

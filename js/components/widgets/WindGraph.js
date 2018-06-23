@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react'
-import { View, ScrollView, StyleSheet } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import {
     VictoryChart,
     VictoryLine,

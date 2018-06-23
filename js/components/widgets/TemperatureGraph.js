@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react'
-import { View, ScrollView, Dimensions, LayoutAnimation } from 'react-native'
+import { View, ScrollView, LayoutAnimation } from 'react-native'
 import {
     VictoryChart,
     VictoryLine,
@@ -20,8 +20,6 @@ type State = {
     expanded: boolean,
 }
 
-const SCREEN = Dimensions.get('window').width
-const LARGE = 600
 export class TemperatureGraph extends Component<Props, State> {
     state = {
         expanded: false,
@@ -41,8 +39,6 @@ export class TemperatureGraph extends Component<Props, State> {
         const domain = [minDewPoint, maxTemp]
         const humidity = lastDay.map(reading => reading.humidity)
         const dates = lastDay.map(reading => reading.date)
-        const { expanded } = this.state
-        const width = expanded ? LARGE : SCREEN
         return (
             <View>
                 <ScrollView horizontal>

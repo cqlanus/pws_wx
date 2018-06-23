@@ -6,7 +6,6 @@ import {
     VictoryLine,
     VictoryTheme,
     VictoryGroup,
-    VictoryZoomContainer,
     VictoryAxis,
     VictoryLegend,
 } from 'victory-native'

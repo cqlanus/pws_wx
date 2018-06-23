@@ -1,14 +1,15 @@
 // @flow
 import React, { Component } from 'react'
-import { View, StyleSheet, LayoutAnimation } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { Row, StyledText, PwsCard, FlipButton, SolarGraph } from '.'
 import { Colors, Icons } from '../../resources'
 import Icon from 'react-native-vector-icons/Feather'
 import { simpleAnimate } from '../../utils'
-import type { Device } from '../../types'
+import type { Device, CurrentSolarData } from '../../types'
+import { UV_INDECES } from '../../data'
 
 type Props = {
-    solarData: any,
+    solarData: CurrentSolarData,
     device: Device,
 }
 
@@ -16,29 +17,6 @@ type State = {
     expanded: boolean,
     front: boolean,
 }
-
-const UV_INDECES = [
-    {
-        uvNums: [0, 1, 2],
-        risk: 'Low',
-    },
-    {
-        uvNums: [3, 4, 5],
-        risk: 'Med.',
-    },
-    {
-        uvNums: [6, 7],
-        risk: 'High',
-    },
-    {
-        uvNums: [8, 9, 10],
-        risk: 'V. High',
-    },
-    {
-        uvNums: [11],
-        risk: 'Exc.',
-    },
-]
 
 const BORDER_HEIGHT = 150
 

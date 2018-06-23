@@ -4,19 +4,12 @@ import { View, StyleSheet, ImageBackground } from 'react-native'
 import { StyledText, Row, FlipButton, PwsCard, WindGraph } from '.'
 import { Colors, Images, Icons } from '../../resources'
 import Icon from 'react-native-vector-icons/Feather'
-import type { Device } from '../../types'
+import type { Device, CurrentWindData } from '../../types'
 import { simpleAnimate } from '../../utils'
 
 type Props = {
-    windData: WindData,
+    windData: CurrentWindData,
     device: Device,
-}
-
-type WindData = {
-    winddir: number,
-    windspeedmph: number,
-    windgustmph: number,
-    maxdailygust: number,
 }
 
 type State = {

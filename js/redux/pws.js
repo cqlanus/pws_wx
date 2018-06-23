@@ -1,6 +1,7 @@
 // @flow
 import { api } from '../api/ApiManager'
 import { createSelector } from 'reselect'
+import type { Device, Reading } from '../types'
 
 /* ACTION TYPES */
 const Types = {
@@ -37,20 +38,21 @@ export const fetchPws = () => async (dispatch: any) => {
 
 type State = {
     isWorking: boolean,
-    device: mixed,
-    currentResult: mixed,
+    device: ?Device,
+    currentResult: ?Reading,
     error: mixed,
 }
 
 type Action =
     | { type: string }
-    | { type: string, pws: Array<*> }
+    | { type: string, pws: Device }
     | { type: string, error: mixed }
 
 const initialState = {
     isWorking: false,
     device: null,
     error: null,
+    currentResult: null,
 }
 
 /* REDUCER */
