@@ -1,3 +1,5 @@
+import { Promise } from 'core-js'
+
 // @flow
 
 /* ACTION TYPES */
@@ -16,10 +18,10 @@ const fetchUserLocationFailed = error => {
     }
 }
 
-const fetchUserLocationComplete = result => {
+const fetchUserLocationComplete = coords => {
     return {
         type: Types.LOCATION_FETCH_COMPLETE,
-        result,
+        coords,
     }
 }
 
@@ -33,36 +35,35 @@ const fetchUserLocationStarted = () => {
 export const fetchUserLocation = () => async (dispatch: any) => {
     dispatch(fetchUserLocationStarted())
     try {
-        const response = await fetch('https://ipinfo.io', {
-            method: 'GET',
-            headers: { accept: 'application/json' },
-        })
-
-        const json = await response.json()
-        dispatch(fetchUserLocationComplete(json))
+        const { coords } = await userLocation()
+        dispatch(fetchUserLocationComplete(coords))
     } catch (error) {
-        dispatch(
-            fetchUserLocationFailed(
-                'An error occurred calling the location API',
-            ),
-        )
+        fetchUserLocationFailed(error)
     }
+}
+
+const userLocation = () => {
+    return new Promise((resolve, reject) => {
+        const success = data => resolve(data)
+        const error = error => reject(error)
+        navigator.geolocation.getCurrentPosition(success, error)
+    })
 }
 
 type State = {
     isFetching: boolean,
-    result: mixed,
+    coords: mixed,
     message: ?string,
 }
 
 type Action =
     | { type: string }
-    | { type: string, result: mixed }
+    | { type: string, coords: mixed }
     | { type: string, error: mixed }
 
 const initialState = {
     isFetching: false,
-    result: null,
+    coords: null,
     message: null,
 }
 
@@ -72,7 +73,7 @@ export const location = (state: State = initialState, action: Action) => {
             return {
                 ...state,
                 isFetching: true,
-                result: null,
+                coords: null,
                 message: null,
             }
         }
@@ -80,7 +81,7 @@ export const location = (state: State = initialState, action: Action) => {
             return {
                 ...state,
                 isFetching: false,
-                result: action.result && action.result,
+                coords: action.coords && action.coords,
                 message: null,
             }
         }
@@ -88,7 +89,7 @@ export const location = (state: State = initialState, action: Action) => {
             return {
                 ...state,
                 isFetching: false,
-                result: null,
+                coords: null,
                 message: action.error && action.error,
             }
         }

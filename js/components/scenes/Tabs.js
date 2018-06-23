@@ -6,6 +6,7 @@ import {
     ScreenIdentifiers,
     IntroScreen,
     PWSContainer,
+    NWSContainer,
 } from '../../screens'
 import { Images } from '../../resources'
 import { TabIcon } from '../widgets'
@@ -34,8 +35,8 @@ export const TabScene = {
             key={TabIdentifiers.Forecast}>
             <Scene
                 initial
-                component={IntroScreen}
-                key={ScreenIdentifiers.Intro2}
+                component={NWSContainer}
+                key={ScreenIdentifiers.NWS}
             />
         </Scene>
     ),

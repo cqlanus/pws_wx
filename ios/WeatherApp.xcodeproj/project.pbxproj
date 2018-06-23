@@ -1629,6 +1629,7 @@
 				PRODUCT_NAME = WeatherApp;
 				PROVISIONING_PROFILE = "378b5b98-f963-436e-ab59-d04971c6d219";
 				PROVISIONING_PROFILE_SPECIFIER = pws_prov_prof;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1661,6 +1662,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.cqlanus.WeatherApp;
 				PRODUCT_NAME = WeatherApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

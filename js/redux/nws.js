@@ -70,6 +70,7 @@ export const nws = (state: State = initialState, action: Action) => {
             return {
                 ...state,
                 error: action.error && action.error,
+                isWorking: false,
             }
         default:
             return state
