@@ -34,3 +34,5 @@ export const calcWindDirectionText = (windDir: number) => {
 
 export const simpleAnimate = () =>
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+
+export { consumeMultipleDurations } from './nws'

@@ -19,9 +19,19 @@ export class NwsService implements NwsInterface {
     }
 
     getDetailedForecast = async (point: Point) => {
-        const { properties } = await this.getPoint(point)
+        const res = await this.getPoint(point)
+        console.log(res)
+        const { properties } = res
         const { forecastGridData } = properties
         const response = await fetch(forecastGridData)
+        return await response.json()
+    }
+
+    getHourlyForecast = async (point: Point) => {
+        const res = await this.getPoint(point)
+        const { properties } = res
+        const { forecastHourly } = properties
+        const response = await fetch(forecastHourly)
         return await response.json()
     }
 }
