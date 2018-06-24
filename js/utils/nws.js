@@ -8,6 +8,12 @@ type NWSValue = {
     value: number,
 }
 
+type NWSNode = {
+    values: Array<NWSValue>,
+    sourceUnit: string,
+    uom: string,
+}
+
 const arrayifyNwsValues = (
     acc: Array<NWSValue>,
     dur: NWSValue,
@@ -36,6 +42,10 @@ const arrayifyDuration = (dateInt: string) => {
 
 export const consumeMultipleDurations = (durations: Array<NWSValue>) => {
     return durations.reduce(arrayifyNwsValues, [])
+}
+
+export const getValues = (node: NWSNode) => {
+    return consumeMultipleDurations(node.values)
 }
 
 const isLast = (idx, array) => array.length === idx + 1

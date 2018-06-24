@@ -11,6 +11,8 @@ import {
 } from 'victory-native'
 import { formatTimeTick } from '../../utils'
 import type { Device } from '../../types'
+import { Colors } from '../../resources'
+const THEME = [Colors.blue, Colors.red, Colors.green, Colors.yellow]
 
 type Props = {
     lastDay: Device,
@@ -43,7 +45,7 @@ export class TemperatureGraph extends Component<Props, State> {
             <View>
                 <ScrollView horizontal>
                     <VictoryChart width={800} theme={VictoryTheme.material}>
-                        <VictoryGroup colorScale={'qualitative'}>
+                        <VictoryGroup colorScale={THEME}>
                             <VictoryLine data={temps} />
                             <VictoryLine data={dewPoints} />
                             <VictoryLine data={humidity} />
@@ -73,7 +75,7 @@ export class TemperatureGraph extends Component<Props, State> {
                         />
                         <VictoryLegend
                             orientation={'horizontal'}
-                            colorScale={'qualitative'}
+                            colorScale={THEME}
                             x={50}
                             y={10}
                             data={[
