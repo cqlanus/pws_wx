@@ -7,7 +7,8 @@ import { Colors } from '../resources'
 import { fetchNws, fetchUserLocation } from '../redux'
 import type { Coords } from '../types'
 import { Point } from '../types'
-import { calcWindDirectionText, getValues } from '../utils'
+import { calcWindDirectionText, getValues, isMidnight } from '../utils'
+import moment from 'moment'
 
 import {
     VictoryChart,
@@ -17,6 +18,8 @@ import {
     VictoryArea,
     VictoryAxis,
     VictoryScatter,
+    VictoryBar,
+    VictoryLegend,
 } from 'victory-native'
 
 type Props = {
@@ -51,19 +54,30 @@ class NWS extends Component<Props> {
         fetchNws(point)
     }
 
-    _x = val => val.validtime
+    _format = val =>
+        val
+            .local()
+            .format('ha')
+            .slice(0, -1)
 
-    _format = val => val.format('ha').slice(0, -1)
+    _daytimeData = max => {
+        const { forecast } = this.props
+        const { periods } = forecast.hourly
+        return periods.map(d => ({
+            validTime: moment(d.startTime),
+            value: max,
+            color: d.isDaytime ? Colors.white : Colors.lightGrey,
+        }))
+    }
 
     _renderTempForecast = () => {
         const { forecast } = this.props
-        const {
-            dewpoint,
-            temperature,
-            apparentTemperature,
-        } = forecast.properties
-
+        const { properties } = forecast
+        console.log(forecast)
+        const { dewpoint, temperature, apparentTemperature } = properties
         const temps = getValues(temperature)
+        const max = 40
+        const night = this._daytimeData(max)
         const dews = getValues(dewpoint)
         const feelsLike = getValues(apparentTemperature)
         const dates = temps.map(x)
@@ -73,10 +87,25 @@ class NWS extends Component<Props> {
                 width={800}
                 height={250}
                 theme={VictoryTheme.material}>
-                <VictoryGroup colorScale={THEME}>
+                <VictoryBar
+                    style={{
+                        data: { fill: d => d.color },
+                    }}
+                    data={night}
+                    y={y}
+                    x={x}
+                />
+
+                <VictoryGroup
+                    style={{
+                        parent: {
+                            fill: Colors.red,
+                        },
+                    }}
+                    colorScale={THEME}>
                     <VictoryLine data={feelsLike} y={y} x={x} />
-                    <VictoryLine data={temps} y={y} x={x} />
                     <VictoryLine data={dews} y={y} x={x} />
+                    <VictoryLine data={temps} y={y} x={x} />
                 </VictoryGroup>
                 <VictoryAxis
                     tickValues={dates}
@@ -85,24 +114,37 @@ class NWS extends Component<Props> {
                 />
                 <VictoryAxis dependentAxis />
                 <VictoryAxis dependentAxis orientation={'right'} />
+                <VictoryLegend
+                    orientation={'horizontal'}
+                    colorScale={THEME}
+                    x={50}
+                    y={20}
+                    data={[
+                        { name: 'feels like' },
+                        { name: 'temps' },
+                        { name: 'dew points' },
+                    ]}
+                />
             </VictoryChart>
         )
     }
 
     _renderRainForecast = () => {
         const { forecast } = this.props
+        const { properties } = forecast
         const {
             probabilityOfPrecipitation,
             relativeHumidity,
             skyCover,
             quantitativePrecipitation,
-        } = forecast.properties
+        } = properties
         const precip = getValues(probabilityOfPrecipitation)
         const humidity = getValues(relativeHumidity)
         const clouds = getValues(skyCover)
         const rain = getValues(quantitativePrecipitation)
         const maxRain = 10 // cm
         const maxY = 100
+        const night = this._daytimeData(maxY)
         const dates = precip.map(x)
 
         return (
@@ -110,6 +152,14 @@ class NWS extends Component<Props> {
                 width={800}
                 height={250}
                 theme={VictoryTheme.material}>
+                <VictoryBar
+                    style={{
+                        data: { fill: d => d.color },
+                    }}
+                    data={night}
+                    y={y}
+                    x={x}
+                />
                 <VictoryGroup colorScale={THEME}>
                     <VictoryLine data={humidity} y={y} x={x} />
                     <VictoryLine data={clouds} y={y} x={x} />
@@ -132,6 +182,18 @@ class NWS extends Component<Props> {
                     tickFormat={d => parseInt(d * maxRain) / (maxY / 2)}
                     orientation={'right'}
                 />
+                <VictoryLegend
+                    orientation={'horizontal'}
+                    colorScale={THEME}
+                    x={50}
+                    y={20}
+                    data={[
+                        { name: 'humidity' },
+                        { name: 'cloud cover' },
+                        { name: '% precip' },
+                        { name: 'rain accum.' },
+                    ]}
+                />
             </VictoryChart>
         )
     }
@@ -145,6 +207,7 @@ class NWS extends Component<Props> {
 
         const maxGraph = 20
         const maxDirection = 360 / maxGraph
+        const night = this._daytimeData(maxGraph)
         const dates = wind.map(x)
 
         return (
@@ -152,10 +215,18 @@ class NWS extends Component<Props> {
                 width={800}
                 height={250}
                 theme={VictoryTheme.material}>
+                <VictoryBar
+                    style={{
+                        data: { fill: d => d.color },
+                    }}
+                    data={night}
+                    y={y}
+                    x={x}
+                />
                 <VictoryGroup colorScale={THEME}>
                     <VictoryLine data={wind} y={y} x={x} />
                     <VictoryLine data={gusts} y={y} x={x} />
-                    <VictoryScatter
+                    <VictoryLine
                         data={direction}
                         x={x}
                         y={d => d.value / maxDirection}
@@ -172,6 +243,17 @@ class NWS extends Component<Props> {
                     tickValues={[5, 10, 15, 20]}
                     orientation={'right'}
                     tickFormat={d => calcWindDirectionText(d * maxDirection)}
+                />
+                <VictoryLegend
+                    orientation={'horizontal'}
+                    colorScale={THEME}
+                    x={50}
+                    y={30}
+                    data={[
+                        { name: 'wind speed' },
+                        { name: 'wind gust' },
+                        { name: 'wind direction' },
+                    ]}
                 />
             </VictoryChart>
         )

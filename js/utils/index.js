@@ -35,4 +35,9 @@ export const calcWindDirectionText = (windDir: number) => {
 export const simpleAnimate = () =>
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
 
-export { consumeMultipleDurations, getValues } from './nws'
+export {
+    consumeMultipleDurations,
+    getValues,
+    getDividedValues,
+    isMidnight,
+} from './nws'

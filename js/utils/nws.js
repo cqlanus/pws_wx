@@ -44,8 +44,33 @@ export const consumeMultipleDurations = (durations: Array<NWSValue>) => {
     return durations.reduce(arrayifyNwsValues, [])
 }
 
+const divideValuesByDay = (values: Array<NWSValue>) => {
+    const structure = {}
+    values.forEach(val => {
+        const date = val.validTime.format('MM/DD')
+        if (structure[date]) {
+            structure[date].push(val)
+        } else {
+            structure[date] = [val]
+        }
+    })
+    return Object.values(structure)
+}
+
 export const getValues = (node: NWSNode) => {
-    return consumeMultipleDurations(node.values)
+    const values = consumeMultipleDurations(node.values)
+    return values
+}
+
+export const getDividedValues = (node: NWSNode) => {
+    const values = consumeMultipleDurations(node.values)
+    const divided = divideValuesByDay(values)
+    return divided
 }
 
 const isLast = (idx, array) => array.length === idx + 1
+
+export const isMidnight = (time: moment) => {
+    const midnight = moment({ hour: 24, minute: 0 })
+    return time.isSame(midnight)
+}

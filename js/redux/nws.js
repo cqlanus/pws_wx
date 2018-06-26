@@ -28,8 +28,9 @@ const fetchNwsFailed = error => ({
 export const fetchNws = (point: Point) => async (dispatch: any) => {
     try {
         dispatch(fetchNwsStarted())
-        const data = await api.nws.getDetailedForecast(point)
-        dispatch(fetchNwsCompleted(data))
+        const { properties } = await api.nws.getDetailedForecast(point)
+        const { properties: hourly } = await api.nws.getHourlyForecast(point)
+        dispatch(fetchNwsCompleted({ properties, hourly }))
     } catch (error) {
         dispatch(fetchNwsFailed(error))
     }

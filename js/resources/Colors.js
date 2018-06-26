@@ -5,8 +5,8 @@ export const Colors = {
     yellow: '#fed741',
     grey: '#c5ccd2',
     darkGrey: '#647889',
-    lightGrey: '#eee',
+    lightGrey: '#ddd',
     teal: 'rgb(80, 191, 189)',
     red: '#D06F72',
-    green: '#C6E4B2',
+    green: '#74B0A7',
 }

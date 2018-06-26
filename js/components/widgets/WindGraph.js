@@ -23,11 +23,12 @@ export class WindGraph extends Component<Props> {
     render() {
         const { gustLine, windDir, axisPadding } = styles
         const { lastDay } = this.props
-        const gusts = lastDay.map(reading => reading.windgustmph)
         const direction = lastDay.map(r => r.winddir)
         const dates = lastDay.map(reading => reading.date)
-        const proportion = Math.max(...gusts) / Math.max(...direction)
-        const mappedDirection = direction.map(dir => dir * proportion)
+
+        const maxGraph = 8
+        const maxDirection = 360 / maxGraph
+
         return (
             <View style={{ paddingHorizontal: 20, paddingBottom: 10 }}>
                 <ScrollView horizontal>
@@ -37,19 +38,20 @@ export class WindGraph extends Component<Props> {
                                 data={lastDay}
                                 y={d => d.windspeedmph}
                             />
-                            <VictoryScatter
-                                data={mappedDirection}
+                            <VictoryLine
+                                data={direction}
+                                y={d => d / maxDirection}
                                 style={{ data: windDir }}
                             />
                             <VictoryLine
                                 style={{ data: gustLine }}
-                                data={gusts}
+                                data={lastDay}
+                                y={d => d.windgustmph}
                             />
                         </VictoryGroup>
                         <VictoryAxis
-                            fixLabelOverlap
                             tickValues={dates}
-                            tickCount={10}
+                            tickCount={12}
                             invertAxis
                             tickFormat={formatTimeTick}
                             label={'time'}
@@ -62,9 +64,11 @@ export class WindGraph extends Component<Props> {
                         />
                         <VictoryAxis
                             dependentAxis
-                            tickValues={DIRECTIONS}
-                            tickFormat={d => calcWindDirectionText(d * 60)}
+                            tickValues={[2, 4, 6, 8]}
                             orientation={'right'}
+                            tickFormat={d =>
+                                calcWindDirectionText(d * maxDirection)
+                            }
                             label={'direction'}
                             style={{ axisLabel: axisPadding }}
                         />
